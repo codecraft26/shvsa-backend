@@ -1,9 +1,10 @@
-import {ApiError} from "../utils/ApiError.js"
-import {ApiResponse} from "../utils/ApiResponse.js"
-import {asyncHandler} from "../utils/asyncHandler.js"
 
 
-const healthcheck = asyncHandler(async (req, res) => {
+import catchAsyncErrors from '../middleware/catchAsyncErrors.js';
+import ErrorHandler from '../utils/errorHandler.js';
+
+import { ApiResponse } from '../utils/ApiResponse.js';
+const healthcheck = catchAsyncErrors(async (req, res,next) => {
     const healthCheck = {
         uptime: process.uptime(),
         message: 'ok',
@@ -21,13 +22,11 @@ const healthcheck = asyncHandler(async (req, res) => {
     } catch (error) {
         console.error("Error in health check",error)
         healthCheck.message = error;
-        throw new ApiError(
-            503,
-            " getting Error in health check time"
-        ) 
+        throw next(new ErrorHandler(500, 'Internal Server Error', healthCheck));
     }
 
-})
+}
+);
 
 export {
     healthcheck
