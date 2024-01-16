@@ -16,7 +16,7 @@ const supportAgent  = new mongoose.Schema({
       const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
       return emailRegex.test(email);
     }
-   
+  
   },
   phone: {
     type: String,
@@ -39,6 +39,9 @@ const supportAgent  = new mongoose.Schema({
 });
 // Static field to store last assigned agent ID
 supportAgent.statics.lastAssignedAgentId = null;
+
+
+
 // Static method to set the last assigned agent ID
 supportAgent.statics.setLastAssignedAgentId = function(agentId) {
   this.lastAssignedAgentId = agentId;
@@ -59,7 +62,7 @@ supportAgent.statics.getNextAgent = async function() {
   const nextIndex = lastAssignedIndex >= 0 && lastAssignedIndex < agents.length - 1 ? lastAssignedIndex + 1 : 0;
 
   const nextAgent = agents[nextIndex];
-  this.lastAssignedAgentId = nextAgent._id; // Update last assigned agent ID
+  this.lastAssignedAgentId = nextAgent._id; 
 
   return nextAgent;
 };

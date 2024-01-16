@@ -8,6 +8,10 @@ const errorMiddleware = (err, req, res, next) => {
     err.message=err.message
   }
 
+  if(err.code===404){
+    err.message=err.message
+  }
+
   // Wrong Mongodb Id error
   if (err.name === "CastError") {
     const message = `Resource not found. Invalid: ${err.path}`;
@@ -20,17 +24,6 @@ const errorMiddleware = (err, req, res, next) => {
     err = new ErrorHandler(message, 400);
   }
 
-  // Wrong JWT error
-  if (err.name === "JsonWebTokenError") {
-    const message = `Json Web Token is invalid, Try again`;
-    err = new ErrorHandler(message, 400);
-  }
-
-  // JWT EXPIRE error
-  if (err.name === "TokenExpiredError") {
-    const message = `Json Web Token is Expired, Try again`;
-    err = new ErrorHandler(message, 400);
-  }
 
   res.status(err.statusCode).json({
     success: false,

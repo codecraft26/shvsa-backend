@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 
-const connectDatabase = () => {
+const connectDatabase = (url) => {
   mongoose
-    .connect(`mongodb+srv://aman:aman@cluster0.suqkggz.mongodb.net/?retryWrites=true&w=majority`, {
-   
-   
-      
-    })
+    .connect(
+      url,
+    
+    )
     .then((data) => {
       console.log(`Mongodb connected with server: ${data.connection.host}`);
     });
