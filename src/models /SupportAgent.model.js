@@ -30,13 +30,41 @@ const supportAgent  = new mongoose.Schema({
   },
   active: {
     type: Boolean,
-    default: false
+    default: true
   },
   dateCreated: {
     type: Date,
     default: Date.now
   }
 });
+// Static field to store last assigned agent ID
+supportAgent.statics.lastAssignedAgentId = null;
+// Static method to set the last assigned agent ID
+supportAgent.statics.setLastAssignedAgentId = function(agentId) {
+  this.lastAssignedAgentId = agentId;
+};
+
+
+
+
+// Static method to get the next agent
+supportAgent.statics.getNextAgent = async function() {
+  const agents = await this.find({ active: true }).sort({ dateCreated: 1 });
+  
+  if (agents.length === 0) {
+    throw new Error("No active agents available");
+  }
+
+  const lastAssignedIndex = agents.findIndex(agent => agent._id.equals(this.lastAssignedAgentId));
+  const nextIndex = lastAssignedIndex >= 0 && lastAssignedIndex < agents.length - 1 ? lastAssignedIndex + 1 : 0;
+
+  const nextAgent = agents[nextIndex];
+  this.lastAssignedAgentId = nextAgent._id; // Update last assigned agent ID
+
+  return nextAgent;
+};
+
+
 
 // Create the model
 const SupportAgentModel = mongoose.model('Supportagent', supportAgent);

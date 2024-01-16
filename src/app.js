@@ -37,10 +37,11 @@ app.use((err, req, res, next) => {
 //import  routes 
 import healthcheckRouter from "./routes/healthcheck.routes.js"
 import supportAgentRouter from "./routes/supportAgent.routes.js"
-
+import  supportTicket  from './routes/supportTicket.routes.js'
 
 app.use('/api/healthcheck', healthcheckRouter)
 app.use('/api/support-agents', supportAgentRouter)
+app.use('/api/support-tickets', supportTicket);
 // If that above routes didnt work, we 404 them and forward to error handler
 
 
