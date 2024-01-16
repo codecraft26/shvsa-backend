@@ -5,7 +5,7 @@ class ApiFeatures {
     }
 
 
-    //create a filter on the basis of query string of status,assignedTo,severity,type
+    
     filter(){
         const queryCopy={...this.queryStr};
         //removing fields from the query

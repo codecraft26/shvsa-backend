@@ -14,11 +14,19 @@ const supportTicketSchema = new mongoose.Schema({
   },
   dateCreated: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    validate: {
+      validator: function(v) {
+        return v instanceof Date;
+      },
+      message: props => `${props.value} is not a valid date format!`
+    }
   },
   severity: {
     type: String,
-    required: true
+    required: true,
+    default:'Low',
+    enum: ['Low', 'Medium', 'High'] 
   },
   type: {
     type: String,
@@ -31,7 +39,7 @@ const supportTicketSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'new',
-    enum: ['new', 'Assigned', 'resolved', 'closed']
+    enum: ['New', 'Assigned', 'Resolved', 'Closed']
   },
   resolvedOn: {
     type: Date

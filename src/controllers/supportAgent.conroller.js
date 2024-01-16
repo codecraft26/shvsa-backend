@@ -1,47 +1,38 @@
-
 import { SupportAgentModel } from "../models /SupportAgent.model.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
 import ErrorHandler from "../utils/errorHandler.js";
-import { ApiError } from "../utils/ApiError.js";
 
 
- const supportagent = catchAsyncErrors(async (req, res, next) => {
-    // Extract data from request body
-    const { name, email, phone, description } = req.body;
 
+//for creating a support agent
+const supportagent = catchAsyncErrors(async (req, res, next) => {
+  const { name, email, phone, description } = req.body;
 
-    if (!name || !email || !phone) {
+  if (!name || !email || !phone) {
+    throw next(new ErrorHandler("Please fill all the fields", 400));
+  }
 
-    throw next (ApiError(400, "Please fill all the fields"))
-       
-    }
-    //check for email is already present or not
-    const agent = await SupportAgentModel.findOne({ email });
-    if (agent) {
-        throw next ( new ApiError(400, "Email already exists"))
-    }
+  const agent = await SupportAgentModel.findOne({ email });
+  if (agent) {
+    throw next(new ErrorHandler("Email already exists", 400));
+  }
 
-    // Create a new instance of the model with the extracted data
-    const newAgent = new SupportAgentModel({
-        name,
-        email,
-        phone,
-        description,
+  const newAgent = new SupportAgentModel({
+    name,
+    email,
+    phone,
+    description,
+  });
+
+  const savedAgent = await newAgent.save();
+
+  res
+    .status(201)
+    .json({
+        success: true,
+        message: "Agent created successfully",
+        data: savedAgent,
     });
-
-    // Save the new agent to the database
-    const savedAgent = await newAgent.save();
-
-    // Send back the details of the new agent using ApiResponse for consistency
-   res.status(201).json(
-        new ApiResponse(
-            201,
-            savedAgent,
-            "Agent created successfully"
-        )
-    );
 });
 
-
-export {supportagent}
+export { supportagent };
