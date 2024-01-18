@@ -41,14 +41,18 @@ npm start
 This will start the local server. Depending on your project setup, you might have a different script for starting the server, such as node app.js or using nodemon.
 
 ### Step 5: Open Your Web Browser
-Navigate to http://localhost:3000 or whatever URL your app runs on.
+Navigate to http://localhost:8000 or whatever URL your app runs on.
 
 ## Endpoint 
-|  Endpoints | Response |
-|----------|----------|
-| /api/support-tickets | Row 1, Col 2 | 
-|/api/support-agents | Row 2, Col 2 |     
-| Row 3, Col 1 | Row 3, Col 2 | 
+|  Endpoints | Method | Response|
+|----------|----------|----------------------------------|
+| /api/support-agents |POST| Create Support Agent |
+|/api/support-agnets | GET | To Fetch tha Name of all Agents |
+|/api/support-tickets | POST | Create Support Ticket|
+|/api/support-tickets  |GET|Get All Tickets | 
+|/api/healthcheck|GET|To check Api is working or Not|
+
+
 
 
 
