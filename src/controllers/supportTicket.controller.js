@@ -29,7 +29,7 @@ export const getAllTickets = catchAsyncErrors(async (req, res) => {
   const resultPerPage = 10;
   const page = req.query.page || 1;
 
-  // Apply filters and sorting without pagination
+  
   const apiFeatures = new ApiFeatures(SupportTicket.find(), req.query)
     .filter()
     .sort();
