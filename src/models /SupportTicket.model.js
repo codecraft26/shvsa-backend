@@ -1,58 +1,51 @@
-import mongoose from 'mongoose';
-
-
+import mongoose from "mongoose";
 
 // Define the SupportTicket schema
 const supportTicketSchema = new mongoose.Schema({
   topic: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   dateCreated: {
     type: Date,
     default: Date.now,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return v instanceof Date;
       },
-      message: props => `${props.value} is not a valid date format!`
-    }
+      message: (props) => `${props.value} is not a valid date format!`,
+    },
   },
   severity: {
     type: String,
     required: true,
-    default:'Low',
-    enum: ['Low', 'Medium', 'High'] 
+    default: "Low",
+    enum: ["Low", "Medium", "High"],
   },
   type: {
     type: String,
     required: true,
-    default:'ITSG',
-    enum:['ITSG','HR','HDT']
-
+    default: "ITSG",
+    enum: ["ITSG", "HR", "HDT"],
   },
   assignedTo: {
-    type: String 
+    type: String,
   },
   status: {
     type: String,
     required: true,
-    default: 'New',
-    enum: ['New', 'Assigned', 'Resolved', 'Closed']
+    default: "New",
+    enum: ["New", "Assigned", "Resolved", "Closed"],
   },
   resolvedOn: {
     type: Date,
-    
-  }
+  },
 });
 
-
-  
-
-const SupportTicket = mongoose.model('SupportTicket', supportTicketSchema);
+const SupportTicket = mongoose.model("SupportTicket", supportTicketSchema);
 
 export { SupportTicket };

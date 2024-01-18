@@ -4,11 +4,10 @@ import { SupportAgentModel } from "../models /SupportAgent.model.js";
 
 import { SupportTicket } from "../models /SupportTicket.model.js";
 
-
 //for creating a ticket
 export const createSupportTicket = catchAsyncErrors(async (req, res) => {
   const nextAgent = await SupportAgentModel.getNextAgent();
-  const { name, email} = await SupportAgentModel.findById(nextAgent._id);
+  const { name, email } = await SupportAgentModel.findById(nextAgent._id);
 
   const ticketData = {
     ...req.body,
@@ -29,25 +28,23 @@ export const getAllTickets = catchAsyncErrors(async (req, res) => {
   const resultPerPage = 10;
   const page = req.query.page || 1;
 
-  
   const apiFeatures = new ApiFeatures(SupportTicket.find(), req.query)
     .filter()
     .sort();
 
   // Get the total count of tickets after applying filters
-  const filteredCount = await SupportTicket.countDocuments(apiFeatures.query.getFilter());
+  const filteredCount = await SupportTicket.countDocuments(
+    apiFeatures.query.getFilter()
+  );
 
   // Apply pagination
   apiFeatures.pagination(resultPerPage);
   const tickets = await apiFeatures.query;
 
-  
-  
-    res.status(200).json({
-      tickets,
-      filteredcount: filteredCount, // Use filtered count here
-      resultPerPage,
-      page,
-    });
-
+  res.status(200).json({
+    tickets,
+    filteredcount: filteredCount, // Use filtered count here
+    resultPerPage,
+    page,
+  });
 });

@@ -16,7 +16,6 @@ app.use(
   })
 );
 
-
 //import  routes
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import supportAgentRouter from "./routes/supportAgent.routes.js";

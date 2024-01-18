@@ -4,7 +4,7 @@ import { connectDatabase } from "./db/db.js";
 import app from "./app.js";
 
 //config dotenv file
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: "./config.env" });
 
 connectDatabase(
   process.env.MONGODB_URI ||

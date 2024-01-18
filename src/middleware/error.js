@@ -3,13 +3,12 @@ const errorMiddleware = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal Server Error";
 
-
-  if(err.code===400){
-    err.message=err.message
+  if (err.code === 400) {
+    err.message = err.message;
   }
 
-  if(err.code===404){
-    err.message=err.message
+  if (err.code === 404) {
+    err.message = err.message;
   }
 
   // Wrong Mongodb Id error
@@ -23,7 +22,6 @@ const errorMiddleware = (err, req, res, next) => {
     const message = `Duplicate ${Object.keys(err.keyValue)} Entered`;
     err = new ErrorHandler(message, 400);
   }
-
 
   res.status(err.statusCode).json({
     success: false,
