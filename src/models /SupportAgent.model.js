@@ -56,6 +56,7 @@ supportAgent.statics.getNextAgent = async function() {
   
   if (agents.length === 0) {
     throw new Error("No active agents available");
+    
   }
 
   const lastAssignedIndex = agents.findIndex(agent => agent._id.equals(this.lastAssignedAgentId));

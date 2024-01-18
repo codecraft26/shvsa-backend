@@ -30,7 +30,10 @@ const supportTicketSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    required: true
+    required: true,
+    default:'ITSG',
+    enum:['ITSG','HR','HDT']
+
   },
   assignedTo: {
     type: String 
@@ -38,7 +41,7 @@ const supportTicketSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: 'new',
+    default: 'New',
     enum: ['New', 'Assigned', 'Resolved', 'Closed']
   },
   resolvedOn: {
