@@ -45,7 +45,8 @@ const supportTicketSchema = new mongoose.Schema({
     enum: ['New', 'Assigned', 'Resolved', 'Closed']
   },
   resolvedOn: {
-    type: Date
+    type: Date,
+    
   }
 });
 
