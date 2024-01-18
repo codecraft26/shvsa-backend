@@ -5,19 +5,30 @@ class ApiFeatures {
     }
 
 
-    
-    filter(){
-        const queryCopy={...this.queryStr};
-        //removing fields from the query
-        const removeFields=['sort','page','limit'];
-        removeFields.forEach(el=>delete queryCopy[el]);
-        //advance filter for price, ratings etc
-        let queryStr=JSON.stringify(queryCopy);
-        queryStr=queryStr.replace(/\b(gt|gte|lt|lte)\b/g,match=>`$${match}`);
-        this.query.find(JSON.parse(queryStr));
-        return this;
-    }
+    filter() {
+      const queryCopy = {...this.queryStr};
   
+      // Removing fields from the query
+      const removeFields = ['sort', 'page', 'limit'];
+      removeFields.forEach(el => delete queryCopy[el]);
+  
+      // Iterate over each property in queryCopy
+      for (let key in queryCopy) {
+          // Check if the value is an empty string or a string with just two single quotes
+          if (queryCopy[key] === "''" || queryCopy[key] === "") {
+              // If so, delete the key from queryCopy
+              delete queryCopy[key];
+          }
+      }
+  
+      // Advance filter for price, ratings, etc.
+      let queryStr = JSON.stringify(queryCopy);
+      queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
+      this.query.find(JSON.parse(queryStr));
+  
+      return this;
+  }
+
 
     sort() {
         if (this.queryStr.sort) {

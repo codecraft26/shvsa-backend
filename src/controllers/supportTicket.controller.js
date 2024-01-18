@@ -8,10 +8,11 @@ import { SupportTicket } from "../models /SupportTicket.model.js";
 //for creating a ticket
 export const createSupportTicket = catchAsyncErrors(async (req, res) => {
   const nextAgent = await SupportAgentModel.getNextAgent();
+  const { name, email} = await SupportAgentModel.findById(nextAgent._id);
 
   const ticketData = {
     ...req.body,
-    assignedTo: nextAgent._id,
+    assignedTo: name,
     status: "Assigned",
   };
 
@@ -51,6 +52,8 @@ export const getAllTickets = catchAsyncErrors(async (req, res) => {
     filteredcount,
     resultPerPage,
     page,
-    ticketsCount,
+    TotalCount: ticketsCount,
   });
 });
+
+

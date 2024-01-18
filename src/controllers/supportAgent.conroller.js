@@ -36,3 +36,22 @@ const supportagent = catchAsyncErrors(async (req, res, next) => {
 });
 
 export { supportagent };
+
+
+
+export const getAllAgents = catchAsyncErrors(async (req, res,next) => {
+
+  const agents = await SupportAgentModel.find({});
+
+  if(agents.length === 0) {
+    throw next(new ErrorHandler("No agents found", 404));
+  }
+
+  const agentNames = agents.map(agent => agent.name);
+
+  // Send the names in the response
+  res.status(200).json({
+    success: true,
+    agentNames
+  });
+});
