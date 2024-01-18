@@ -25,35 +25,29 @@ export const createSupportTicket = catchAsyncErrors(async (req, res) => {
   });
 });
 
-
-
-//to fetch all tickets
 export const getAllTickets = catchAsyncErrors(async (req, res) => {
   const resultPerPage = 10;
   const page = req.query.page || 1;
 
-  const ticketsCount = await SupportTicket.countDocuments();
-  if (ticketsCount === 0) {
-    res.status(404).json({
-      message: "No tickets found",
-      success: false,
-    });
-  }
-
+  // Apply filters and sorting without pagination
   const apiFeatures = new ApiFeatures(SupportTicket.find(), req.query)
     .filter()
-    .sort()
-    .pagination(resultPerPage);
+    .sort();
+
+  // Get the total count of tickets after applying filters
+  const filteredCount = await SupportTicket.countDocuments(apiFeatures.query.getFilter());
+
+  // Apply pagination
+  apiFeatures.pagination(resultPerPage);
   const tickets = await apiFeatures.query;
-  const filteredcount = tickets.length;
 
-  res.status(200).json({
-    tickets,
-    filteredcount,
-    resultPerPage,
-    page,
-    TotalCount: ticketsCount,
-  });
+  
+  
+    res.status(200).json({
+      tickets,
+      filteredcount: filteredCount, // Use filtered count here
+      resultPerPage,
+      page,
+    });
+
 });
-
-
